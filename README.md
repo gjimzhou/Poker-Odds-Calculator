@@ -30,7 +30,7 @@ python -m poker_odds.server
 
 Open **http://127.0.0.1:8765** in your browser. Enter both hands, the board,
 and any dead cards, then calculate. Built-in examples cover all four streets.
-Everything runs locally. Stop the server with Ctrl+C. Use `--port 8766` to
+Click the illustrated card slots to open the 52-card picker. Cards already used\nin another slot are disabled. Choose Preflop/Flop/Turn/River to set the board\nsize; click an existing card to replace or remove it. Dead cards can be added\nin one multi-selection session. No card notation needs to be typed.\n\nEverything runs locally. Stop the server with Ctrl+C. Use `--port 8766` to
 choose a different port. The server binds only to localhost and is intended
 for local use, not public deployment. Only one calculation runs at a time.
 

@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Heads-up · Exact Poker Odds</title>
+<title>Heads-up Exact · Poker Odds Calculator</title>
+<meta name="description" content="Exact heads-up Texas Hold’em odds. Enter two known hands, a board, and optional dead cards. Calculated by the local Python server.">
 <style>
 :root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;color:#e9f2ef;background:#101b19}
-*{box-sizing:border-box}body{margin:0}main{max-width:980px;margin:auto;padding:52px 24px}
+*{box-sizing:border-box}body{margin:0}main{max-width:980px;margin:auto;padding:30px 24px}
 .eyebrow{color:#9dd9bb;letter-spacing:.16em;font-size:12px;text-transform:uppercase}
-h1{font-size:clamp(32px,6vw,52px);line-height:1.1;margin:14px 0}p{color:#aebfb8}h2{font-size:22px;margin:0 0 14px}
+h1{font-size:clamp(28px,4vw,38px);line-height:1.1;margin:14px 0}p{color:#aebfb8}h2{font-size:22px;margin:0 0 14px}
 .layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}.panel{min-width:0;background:#182924;border:1px solid #31453d;border-radius:18px;padding:26px}
 label{display:block;font-weight:600;margin-top:20px}label:first-child{margin-top:0}.hint{display:block;color:#aebfb8;font-size:13px;font-weight:400;margin:3px 0 8px}
 input{width:100%;padding:12px;font:18px ui-monospace,monospace;background:#0f1d18;border:1px solid #50675a;border-radius:8px;color:#fff}
@@ -16,25 +17,35 @@ button:disabled{opacity:.6;cursor:wait}#submit{width:100%;margin-top:24px}.examp
 #status{min-height:24px;color:#bdddc7;font-size:14px;margin-top:18px}#status.error{color:#ffb2a3}.equities{display:flex;justify-content:space-between;gap:12px}.big{font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.04em;color:#c4f6d5}.muted{font-size:13px;color:#aebfb8}.bar{display:flex;height:10px;border-radius:9px;overflow:hidden;background:#31453d;margin:22px 0}.bar div:first-child{background:#b7edc8}.bar div:last-child{background:#568fba}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:10px 0;border-bottom:1px solid #31453d}td:last-child,th:last-child{text-align:right}code{overflow-wrap:anywhere;color:#d8ecd9;font-size:13px}details{margin-top:24px}summary{cursor:pointer;color:#bdddc7}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#c4d8cb}.note{font-size:13px;margin-top:24px}a{color:#c4f6d5}.placeholder{padding:24px 0;color:#aebfb8}[hidden]{display:none!important}
 @media(max-width:720px){.layout{grid-template-columns:1fr}main{padding:30px 16px}.panel{padding:22px}}
+
+.hand-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card-group{margin:0 0 24px}.card-group h2{font-size:16px;margin:0 0 10px}.slots{display:flex;gap:8px;flex-wrap:wrap;align-items:center;min-height:50px}.playing-card{display:flex;flex-direction:column;align-items:center;justify-content:center;width:56px;height:78px;padding:4px;background:#fcfcf7;color:#182020;border:1px solid #dbe4dd;border-radius:8px;font-size:21px;line-height:1.05;box-shadow:0 2px 3px #0003;flex-shrink:0}.playing-card .suit{font-size:27px;margin-top:3px}.playing-card.red{color:#b4243d}.playing-card.empty{color:#a0c9ae;background:#102019;border:1px dashed #6f9680;box-shadow:none;font-size:26px}.playing-card:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 3px 0 #b7edc8}.playing-card:disabled{cursor:not-allowed;opacity:.23;box-shadow:none}.playing-card[aria-pressed="true"]{outline:3px solid #8ad9aa;outline-offset:1px}
+.streets{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}.streets button{background:#284036;color:#cfe7d8;font-size:14px;padding:8px 10px;min-height:44px}.streets button[aria-pressed="true"]{background:#b7edc8;color:#123222}.group-heading{display:flex;align-items:center;justify-content:space-between}.text-button{background:transparent;color:#c6ddcf;font-size:14px;padding:8px;min-height:44px}#reset{padding-left:0}#submit{margin-top:8px}.examples button{font-size:14px;min-height:44px}.hint{font-size:14px}.slots>.muted{padding:8px 0}
+dialog{width:min(860px,calc(100% - 24px));max-height:90dvh;overflow:auto;background:#182924;color:#e9f2ef;border:1px solid #648372;border-radius:16px;padding:22px}dialog::backdrop{background:#06110dcc;backdrop-filter:blur(3px)}.picker-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.picker-heading h2{margin:0}.picker-heading .hint{margin:8px 0 18px}.deck-row{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:7px;margin-bottom:12px}.deck-row .playing-card{width:100%;height:72px;font-size:20px}.deck-row .playing-card .suit{font-size:25px}.picker-footer{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:18px}.picker-footer #picker-done{min-width:100px}
+@media(max-width:600px){dialog{padding:16px}.deck-row{grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding-bottom:10px;border-bottom:1px solid #354e41}.deck-row .playing-card{height:62px;font-size:18px}.deck-row .playing-card .suit{font-size:23px}.panel{padding:18px}.slots{gap:6px}.playing-card{width:48px;height:68px}.hand-grid{gap:12px}}
 </style>
 </head>
 <body><main>
 <div class="eyebrow">Texas Hold'em · Two known hands</div>
-<h1>Every board. Exact odds.</h1>
-<p>Preflop to river, with optional known dead cards. Wins, ties and pot equity — without random sampling.</p>
+<h1>Heads-up odds</h1>
+<p>Two known hands. Any street. Optional dead cards.</p>
 <div class="layout">
 <section class="panel"><form id="form">
-<label for="hand1">Player 1<span class="hint">Two hole cards · e.g. As Ah</span></label><input id="hand1" name="hand1" value="As Ah" required autocomplete="off" spellcheck="false">
-<label for="hand2">Player 2<span class="hint">Two hole cards · e.g. Kc Kd</span></label><input id="hand2" name="hand2" value="Kc Kd" required autocomplete="off" spellcheck="false">
-<label for="board">Board<span class="hint">Empty for preflop, or 3 / 4 / 5 cards</span></label><input id="board" name="board" value="2c 7d 9h Js" autocomplete="off" spellcheck="false">
-<label for="dead">Dead cards <span class="hint">Optional · known folded or otherwise unavailable cards</span></label><input id="dead" name="dead" placeholder="e.g. Ks Kh" autocomplete="off" spellcheck="false">
-<button id="submit" type="submit">Calculate exact odds</button>
+<div class="hand-grid">
+<div class="card-group"><h2>Player 1</h2><div id="hand1" class="slots" role="group" aria-label="Player 1 hole cards"></div></div>
+<div class="card-group"><h2>Player 2</h2><div id="hand2" class="slots" role="group" aria-label="Player 2 hole cards"></div></div>
+</div>
+<div class="card-group"><h2>Board</h2>
+<div class="streets" role="group" aria-label="Street"><button type="button" data-street="0" aria-pressed="true">Preflop</button><button type="button" data-street="3" aria-pressed="false">Flop</button><button type="button" data-street="4" aria-pressed="false">Turn</button><button type="button" data-street="5" aria-pressed="false">River</button></div>
+<div id="board" class="slots" role="group" aria-label="Community cards"></div></div>
+<div class="card-group"><div class="group-heading"><h2>Dead cards <span class="muted">optional</span></h2><button type="button" class="text-button" id="clear-dead">Clear</button></div><div id="dead" class="slots" role="group" aria-label="Dead cards"></div><p class="hint">Known folded or unavailable cards.</p></div>
+<button type="button" class="text-button" id="reset">Clear all cards</button>
+<button id="submit" type="submit">Calculate exact odds</button><button id="cancel" type="button" hidden style="width:100%;margin-top:10px;background:#31453d;color:white">Cancel calculation</button>
 </form><div class="examples" aria-label="Load examples"><button type="button" data-example="0">Preflop</button><button type="button" data-example="1">Flop draw</button><button type="button" data-example="2">Turn + dead cards</button><button type="button" data-example="3">River split</button></div>
 <div id="status" role="status" aria-live="polite"></div>
-<div class="muted">Ranks: 2–9, T, J, Q, K, A · Suits: c ♣, d ♦, h ♥, s ♠</div>
+<div class="muted">Tap a card to choose, replace or remove it.</div>
 </section>
 <section class="panel" aria-label="Results"><h2>Showdown equity</h2>
-<div id="placeholder" class="placeholder">Enter the cards and calculate.<p>All results are conditional on the cards you know. Equity includes half of each split pot.</p></div>
+<div id="placeholder" class="placeholder">Choose the cards and calculate.<p>All results are conditional on the cards you know. Equity includes half of each split pot.</p></div>
 <div id="results" hidden>
 <div class="equities"><div><div class="muted">PLAYER 1</div><div id="eq1" class="big"></div></div><div><div class="muted">PLAYER 2</div><div id="eq2" class="big"></div></div></div>
 <div class="bar" aria-hidden="true"><div id="bar1"></div><div id="bar2"></div></div>
@@ -43,22 +54,84 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;p
 <p class="muted">Player 1 exact equity<br><code id="fraction"></code></p>
 <details><summary>Exact counts & fractions</summary><pre id="raw"></pre></details>
 </div>
-<p class="note">Method: full enumeration of legal board combinations. No Monte Carlo and no approximation of counts. Percentages are rounded for display. This is not a universal closed-form equity formula.</p>
+<p class="note">Method: full enumeration of legal board combinations. Calculated by the local Python server. No random sampling. Percentages are rounded for display. This is not a universal closed-form equity formula.</p>
 </section></div>
 <p class="note">Known dead cards are excluded from the deck. Unknown folded cards and unknown burn cards remain unknown; do not guess them. Assumes a fair remaining deck and showdown without further folds.</p>
 </main>
+<dialog id="picker" aria-labelledby="picker-title">
+<div class="picker-heading"><div><h2 id="picker-title">Choose a card</h2><p id="picker-hint" class="hint" aria-live="polite"></p></div><button type="button" id="picker-close" class="text-button" aria-label="Close card picker">✕</button></div>
+<div id="deck" aria-label="Deck of cards"></div>
+<div class="picker-footer"><button type="button" id="remove-card" class="text-button">Remove card</button><button type="button" id="picker-done">Done</button></div>
+</dialog>
 <script>
 const $=id=>document.getElementById(id), fields=['hand1','hand2','board','dead'];
 const examples=[['As Ah','Kc Kd','',''],['As Qs','9c 9d','Js Ts 9h','Ks 2h'],['As Ah','Kc Kd','2c 7d 9h Js','Ks Kh'],['2s 3s','4c 5d','As Ks Qs Js Ts','']];
+const state={hand1:[null,null],hand2:[null,null],board:[],dead:[]};
+const labels={hand1:'Player 1',hand2:'Player 2',board:'Board',dead:'Dead cards'};
+const suitIcons={s:'♠',h:'♥',d:'♦',c:'♣'}, suitNames={s:'spades',h:'hearts',d:'diamonds',c:'clubs'};
+const rankNames={A:'Ace',K:'King',Q:'Queen',J:'Jack',T:'10'};
+let target=null, addingDead=false, returnFocus=null;
 function clearResults(){$('results').hidden=true;$('placeholder').hidden=false;}
-document.querySelectorAll('[data-example]').forEach(b=>b.onclick=()=>{examples[+b.dataset.example].forEach((v,i)=>$(fields[i]).value=v);clearResults();$('status').textContent='Example loaded. Calculate to see the result.';});
-fields.forEach(id=>$(id).addEventListener('input',()=>{clearResults();$('status').textContent='';}));
+function changed(){clearResults();$('status').textContent='';$('status').className='';render();}
+function cardName(c){return (rankNames[c[0]]||c[0])+' of '+suitNames[c[1]];}
+function face(button,card){
+ button.className='playing-card'+(!card?' empty':/[hd]$/.test(card)?' red':'');button.replaceChildren();
+ if(!card){button.textContent='+';return;}
+ const rank=document.createElement('span');rank.textContent=card[0]==='T'?'10':card[0];
+ const suit=document.createElement('span');suit.className='suit';suit.textContent=suitIcons[card[1]];button.append(rank,suit);
+}
+function slot(group,index,card){
+ const b=document.createElement('button');b.type='button';face(b,card);b.dataset.group=group;b.dataset.index=index;
+ b.setAttribute('aria-label',labels[group]+' card '+(index+1)+(card?': '+cardName(card):': choose a card'));
+ b.onclick=()=>openPicker(group,index);return b;
+}
+function render(){
+ for(const group of fields){
+  $(group).replaceChildren();state[group].forEach((card,i)=>$(group).append(slot(group,i,card)));
+  if(group==='dead'&&state.dead.length<43)$(group).append(slot(group,state.dead.length,null));
+  if(group==='board'&&!state.board.length){const p=document.createElement('span');p.className='muted';p.textContent='No community cards yet';$(group).append(p);}
+ }
+ $('clear-dead').disabled=!state.dead.length;
+ document.querySelectorAll('[data-street]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.street===state.board.length)));
+}
+function openPicker(group,index){target={group,index};addingDead=group==='dead'&&index===state.dead.length;returnFocus={group,index};renderDeck();$('picker').showModal();}
+function renderDeck(){
+ const {group,index}=target, current=state[group][index];
+ $('picker-title').textContent=labels[group];$('picker-hint').textContent=group==='dead'?state.dead.length+' dead cards selected. Tap cards to add.':'Choose card '+(index+1)+' of '+state[group].length+'. Used cards are unavailable.';
+ $('remove-card').hidden=!current;$('deck').replaceChildren();
+ for(const suit of ['s','h','d','c']){
+  const row=document.createElement('div');row.className='deck-row';row.setAttribute('role','group');row.setAttribute('aria-label',suitNames[suit]);
+  for(const rank of 'AKQJT98765432'){
+   const card=rank+suit,b=document.createElement('button');b.type='button';face(b,card);b.dataset.card=card;b.setAttribute('aria-label',cardName(card));b.setAttribute('aria-pressed',String(card===current));
+   b.disabled=fields.some(g=>state[g].some((c,i)=>c===card&&!(g===group&&i===index)));
+   b.onclick=()=>chooseCard(card);row.append(b);
+  }$('deck').append(row);
+ }
+}
+function chooseCard(card){
+ const {group,index}=target;state[group][index]=card;changed();
+ if(addingDead&&state.dead.length<43){target.index=state.dead.length;renderDeck();return;}
+ const next=state[group].indexOf(null);
+ if(group!=='dead'&&next>=0){target.index=next;renderDeck();return;}
+ $('picker').close();
+}
+$('picker-close').onclick=$('picker-done').onclick=()=>$('picker').close();
+$('picker').addEventListener('close',()=>{if(returnFocus)document.querySelector('[data-group="'+returnFocus.group+'"][data-index="'+Math.min(returnFocus.index,state[returnFocus.group].length)+'"]')?.focus();target=null;});
+$('remove-card').onclick=()=>{const {group,index}=target;if(group==='dead')state.dead.splice(index,1);else state[group][index]=null;changed();$('picker').close();};
+$('clear-dead').onclick=()=>{state.dead=[];changed();};
+$('reset').onclick=()=>{state.hand1=[null,null];state.hand2=[null,null];state.board=[];state.dead=[];changed();};
+for(const b of document.querySelectorAll('[data-street]'))b.onclick=()=>{state.board=Array.from({length:+b.dataset.street},(_,i)=>state.board[i]||null);changed();};
+document.querySelectorAll('[data-example]').forEach(b=>b.onclick=()=>{examples[+b.dataset.example].forEach((v,i)=>state[fields[i]]=v?v.split(' '):[]);changed();$('status').textContent='Example loaded. Calculate to see the result.';});
+render();
+let worker=null, cancelJob=null;
+$('cancel').onclick=()=>{if(worker)worker.terminate();if(cancelJob)cancelJob(new Error('Calculation cancelled.'));};
 const pct=(x,digits=6)=>(100*x).toFixed(digits)+'%';
 $('form').onsubmit=async e=>{
  e.preventDefault();clearResults();$('status').className='';
- const data=Object.fromEntries(fields.map(id=>[id,$(id).value]));
+ if(fields.some(g=>state[g].some(c=>!c))){$('status').className='error';$('status').textContent='Choose a card for every empty slot.';return;}
+ const data=Object.fromEntries(fields.map(id=>[id,state[id].join(' ')]));
  $('status').textContent=data.board.trim()?'Counting every legal board…':'Counting all preflop boards. This may take tens of seconds…';
- const controls=document.querySelectorAll('input,button');controls.forEach(b=>b.disabled=true);
+ const controls=document.querySelectorAll('input,button:not(#cancel)');controls.forEach(b=>b.disabled=true);$('cancel').hidden=true;
  try{
   const response=await fetch('/api/equity',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
   const r=await response.json();if(!response.ok)throw new Error(r.error||'Calculation failed');
@@ -72,6 +145,6 @@ $('form').onsubmit=async e=>{
   $('fraction').textContent=r.equity.fraction;$('raw').textContent=JSON.stringify(r,null,2);
   $('placeholder').hidden=true;$('results').hidden=false;$('status').textContent='Complete. All legal boards counted.';
  }catch(error){$('status').className='error';$('status').textContent=error.message;}
- finally{controls.forEach(b=>b.disabled=false);}
+ finally{if(worker)worker.terminate();worker=null;cancelJob=null;$('cancel').hidden=true;controls.forEach(b=>b.disabled=false);render();}
 };
 </script></body></html>
