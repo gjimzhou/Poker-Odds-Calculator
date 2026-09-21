@@ -142,6 +142,11 @@ checks player/suit/order invariance, and verifies manually countable
 turn/river cases. Randomness is used only to generate evaluator test inputs.
 The production engine does not sample.
 
+CI also runs a Chromium browser test (`tests/browser.cjs`) covering all four
+streets, dead cards, exact displayed results, error recovery, the busy state,
+and mobile horizontal overflow. Playwright is an optional test dependency;
+the application itself still needs only Python.
+
 Exhaustive tests verify the nine standard five-card category totals and
 the exact 50% symmetry of `Ac Ad` versus `Ah As` over all preflop boards.
 The pure-Python preflop calculation may take tens of seconds depending on
