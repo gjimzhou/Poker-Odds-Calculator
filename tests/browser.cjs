@@ -28,10 +28,10 @@ const assert = require('node:assert/strict');
       await page.waitForFunction(() => document.querySelector('#status').textContent.startsWith('Complete'), null, { timeout: 120000 });
     }
     await calculate(2);
-    assert.equal(await page.locator('#eq1').textContent(), '100.000000%');
+    assert.equal(await page.locator('#eq1').textContent(), '100.00%');
     assert.equal(await page.locator('#fraction').textContent(), '1');
     await calculate(3);
-    assert.equal(await page.locator('#eq1').textContent(), '50.000000%');
+    assert.equal(await page.locator('#eq1').textContent(), '50.00%');
     await page.fill('#dead', 'As');
     assert.equal(await page.locator('#results').isVisible(), false);
     await page.click('#submit');

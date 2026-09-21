@@ -65,7 +65,8 @@ assert evaluate('As Ks Qs Js Ts 2d 3c') == (8, 14)
 `opponent_equity` are `fractions.Fraction` values. `wins` and `losses` refer
 to player 1. Equity is expected pot share, so ties contribute **one half**.
 The JSON output includes exact fraction strings and rounded floating-point
-decimal convenience values. The browser displays percentages to six decimals.
+decimal convenience values. The browser shows headline equity to two decimals and outcome probabilities
+to six; exact fractions remain available.
 
 ## The mathematics — and the closed-form boundary
 
