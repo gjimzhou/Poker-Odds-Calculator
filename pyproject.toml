@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exact-headsup-poker-odds"
+version = "1.0.0"
+description = "Exact heads-up Texas Hold'em equity with known hole cards and dead cards"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+poker-odds = "poker_odds.__main__:main"
+
+[tool.setuptools]
+packages = ["poker_odds"]
+
+[tool.setuptools.package-data]
+poker_odds = ["web.html"]
