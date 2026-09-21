@@ -6,13 +6,15 @@ const { spawn } = require('node:child_process');
 const assert = require('node:assert/strict');
 
 (async () => {
-  const server = spawn(process.env.PYTHON || 'python', ['-m', 'poker_odds.server', '--port', '8877']);
+  const staticSite = process.env.POKER_STATIC === '1';
+  const args = staticSite ? ['-u', '-m', 'http.server', '8877', '--bind', '127.0.0.1', '--directory', 'web'] : ['-m', 'poker_odds.server', '--port', '8877'];
+  const server = spawn(process.env.PYTHON || 'python', args);
   let browser;
   try {
     await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error('Server startup timed out')), 10000);
       server.stdout.on('data', data => {
-        if (String(data).includes('Open http://')) { clearTimeout(timeout); resolve(); }
+        if (String(data).includes('Open http://') || String(data).includes('Serving HTTP')) { clearTimeout(timeout); resolve(); }
       });
       server.on('error', reject);
       server.on('exit', code => { clearTimeout(timeout); reject(new Error(`Server exited: ${code}`)); });
@@ -52,6 +54,14 @@ const assert = require('node:assert/strict');
     assert.equal(preflop.total, 1712304);
     assert.equal(preflop.equity.fraction, '29603/36432');
     assert.equal(preflop.method, 'exact_enumeration');
+    if (staticSite) {
+      await page.click('[data-example="0"]');
+      await page.click('#submit');
+      await page.click('#cancel');
+      await page.waitForFunction(() => document.querySelector('#status').textContent === 'Calculation cancelled.');
+      assert.equal(await page.locator('#submit').isEnabled(), true);
+      assert.equal(await page.locator('#results').isVisible(), false);
+    }
     assert.deepEqual(errors, []);
     console.log('Browser E2E passed: all streets, dead cards, exact results, errors, busy state and mobile overflow.');
   } finally {

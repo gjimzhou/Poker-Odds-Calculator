@@ -25,6 +25,9 @@ jobs:
         env:
           POKER_SLOW_TESTS: '1'
   browser:
+    strategy:
+      matrix:
+        mode: ['python', 'static']
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -38,3 +41,5 @@ jobs:
       - run: npm install --no-save --package-lock=false playwright@1.62.1
       - run: npx playwright install --with-deps chromium
       - run: node tests/browser.cjs
+        env:
+          POKER_STATIC: ${{ matrix.mode == 'static' && '1' || '0' }}
