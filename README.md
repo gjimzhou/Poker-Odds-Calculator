@@ -7,18 +7,22 @@ or runtime dependencies. Python 3.10+.
 
 ## Hosted website
 
-[Open Heads-up Exact](https://heads-up-exact.gjimzhou.chatgpt.site) (currently owner-only access).
+**Public app:** https://gjimzhou.github.io/Poker-Odds-Calculator/
 
-The `web/` directory contains the browser-only app: static HTML, a JavaScript
-exact-counting engine, and a Web Worker. It needs no Python backend. Calculations
-run on the visitor's device with progress and cancellation. All counts match the
-Python engine; preflop performance depends on the device. This remains exact
-enumeration, not Monte Carlo or a universal closed-form formula.
+The site is deployed from `web/` to GitHub Pages by
+`.github/workflows/pages.yml` whenever `master` changes. The browser-only app
+uses static HTML, a JavaScript exact-counting engine, and a Web Worker; it needs
+no Python backend. Calculations run on the visitor's device with progress and
+cancellation. All counts match the Python engine; preflop performance depends
+on the device. This remains exact enumeration, not Monte Carlo or a universal
+closed-form formula.
 
-To serve that version locally, run `python -m http.server 8765 --directory web`
-and open http://localhost:8765. Do not open the HTML as a `file://` URL, because
-module workers require an HTTP origin. The static files can also be deployed
-under a subdirectory such as a GitHub Pages project site.
+To serve the same site locally, run
+`python -m http.server 8765 --directory web` and open
+http://localhost:8765. Do not open the HTML as a `file://` URL, because module
+workers require an HTTP origin. All browser imports use relative paths, so the
+same files work at the GitHub Pages project path
+`/Poker-Odds-Calculator/`.
 
 ## Run the Python browser interface
 
