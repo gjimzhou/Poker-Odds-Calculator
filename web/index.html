@@ -23,14 +23,274 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;p
 .streets{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}.streets button{background:#284036;color:#cfe7d8;font-size:14px;padding:8px 10px;min-height:44px}.streets button[aria-pressed="true"]{background:#b7edc8;color:#123222}.group-heading{display:flex;align-items:center;justify-content:space-between}.text-button{background:transparent;color:#c6ddcf;font-size:14px;padding:8px;min-height:44px}#reset{padding-left:0}#submit{margin-top:8px}.examples button{font-size:14px;min-height:44px}.hint{font-size:14px}.slots>.muted{padding:8px 0}
 dialog{width:min(860px,calc(100% - 24px));max-height:90dvh;overflow:auto;background:#182924;color:#e9f2ef;border:1px solid #648372;border-radius:16px;padding:22px}dialog::backdrop{background:#06110dcc;backdrop-filter:blur(3px)}.picker-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.picker-heading h2{margin:0}.picker-heading .hint{margin:8px 0 18px}.deck-row{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:7px;margin-bottom:12px}.deck-row .playing-card{width:100%;height:72px;font-size:20px}.deck-row .playing-card .suit{font-size:25px}.picker-footer{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:18px}.picker-footer #picker-done{min-width:100px}
 @media(max-width:600px){dialog{padding:16px}.deck-row{grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding-bottom:10px;border-bottom:1px solid #354e41}.deck-row .playing-card{height:62px;font-size:18px}.deck-row .playing-card .suit{font-size:23px}.panel{padding:18px}.slots{gap:6px}.playing-card{width:48px;height:68px}.hand-grid{gap:12px}}
+
+/* Poker table visual system */
+:root{
+  --felt-0:#061b15;
+  --felt-1:#0a2a20;
+  --felt-2:#0e3a2b;
+  --rail:#1c1612;
+  --rail-hi:#3b2b22;
+  --gold:#e8c66a;
+  --gold-2:#f5dfa0;
+  --cream:#fffdf4;
+  --ink:#171b1a;
+  --red:#c92f43;
+  --blue:#7fb4d8;
+}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -10%,#194f3a 0,transparent 34rem),
+    radial-gradient(circle at 15% 10%,#0f3428 0,transparent 22rem),
+    linear-gradient(180deg,#07130f 0%,#071a14 45%,#050e0b 100%);
+  color:#f5f3e8;
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;opacity:.22;
+  background-image:
+    repeating-linear-gradient(35deg,#ffffff07 0 1px,transparent 1px 5px),
+    repeating-linear-gradient(125deg,#00000012 0 1px,transparent 1px 6px);
+  mix-blend-mode:soft-light;
+}
+main{max-width:1120px;padding:34px 24px 44px;position:relative;z-index:1}
+.topbar{
+  padding:10px 14px;
+  border:1px solid #ffffff14;
+  background:#07140fbb;
+  backdrop-filter:blur(10px);
+  border-radius:14px;
+  box-shadow:0 12px 34px #0007;
+}
+.eyebrow{color:#d8c079;font-weight:800;letter-spacing:.18em}
+.lang-switch{
+  background:#050c09;
+  border:1px solid #6b5b38;
+  box-shadow:inset 0 0 0 1px #000,0 2px 8px #0005;
+}
+.lang-switch button{color:#d9d1b7}
+.lang-switch button[aria-pressed="true"]{
+  background:linear-gradient(180deg,var(--gold-2),var(--gold));
+  color:#281f0e;
+  box-shadow:0 1px 0 #fff7 inset;
+}
+h1{
+  margin:22px 0 7px;
+  font-size:clamp(36px,6vw,64px);
+  letter-spacing:-.055em;
+  font-weight:850;
+  text-shadow:0 4px 18px #0009;
+}
+h1::after{content:"";display:block;width:78px;height:3px;margin-top:14px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:10px}
+main>p:first-of-type{font-size:17px;max-width:660px;color:#c7d2ca;margin-bottom:0}
+.suit-markers{
+  display:flex;gap:10px;align-items:center;margin-top:17px;
+  width:max-content;padding:6px 10px;border-radius:999px;
+  background:#03090799;border:1px solid #ffffff10;
+  font:700 18px/1 Georgia,serif;
+  box-shadow:inset 0 0 0 1px #000;
+}
+.suit-markers span:nth-child(2),.suit-markers span:nth-child(3){color:#e54758}
+.suit-markers span:nth-child(1),.suit-markers span:nth-child(4){color:#f3efe1}
+.layout{
+  gap:26px;margin-top:26px;align-items:stretch;
+  grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);
+}
+.panel{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 0,#164f39 0,transparent 32rem),
+    linear-gradient(160deg,#0b3226 0%,#09271e 60%,#071f18 100%);
+  border:8px solid var(--rail);
+  outline:1px solid #5c4535;
+  border-radius:30px;
+  padding:28px;
+  box-shadow:
+    inset 0 0 0 1px #ffffff0d,
+    inset 0 0 55px #0005,
+    0 20px 50px #0008,
+    0 2px 0 #705443 inset;
+}
+.panel::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;
+  background:repeating-linear-gradient(45deg,#fff 0 1px,transparent 1px 7px);
+}
+.panel>*{position:relative;z-index:1}
+.input-panel::after{
+  content:"♠";position:absolute;right:18px;bottom:-36px;
+  font:180px/1 Georgia,serif;color:#ffffff08;transform:rotate(-9deg);pointer-events:none;
+}
+.result-panel::after{
+  content:"♦";position:absolute;right:12px;top:54px;
+  font:150px/1 Georgia,serif;color:#d94b5c0c;transform:rotate(8deg);pointer-events:none;
+}
+.card-group h2,.panel>h2{
+  color:#f4e7bd;
+  letter-spacing:.01em;
+  text-shadow:0 1px 0 #000;
+}
+.hand-grid{
+  padding:16px;border-radius:18px;margin-bottom:22px;
+  background:#05130e66;border:1px solid #ffffff12;
+  box-shadow:inset 0 12px 30px #0004;
+}
+.hand-grid .card-group{margin-bottom:0}
+.slots{min-height:82px}
+.playing-card{
+  position:relative;
+  width:62px;height:86px;
+  background:
+    linear-gradient(155deg,#fffef8 0%,#f2efe4 66%,#dfdbcf 100%);
+  color:#101414;
+  border:1px solid #c6c0b2;
+  border-radius:10px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:23px;
+  font-weight:700;
+  box-shadow:
+    0 7px 14px #0007,
+    0 1px 0 #fff inset,
+    inset 0 0 0 1px #ffffffaa;
+  transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+}
+.playing-card::after{
+  content:"";position:absolute;inset:4px;border:1px solid #0000000b;border-radius:7px;pointer-events:none;
+}
+.playing-card .suit{font-size:30px;margin-top:1px}
+.playing-card.red{color:var(--red)}
+.playing-card:hover:not(:disabled){
+  transform:translateY(-5px) rotate(-1deg);
+  box-shadow:0 12px 20px #0008,0 0 0 2px #e7c96a;
+}
+.playing-card.empty{
+  color:#d6c787;
+  background:
+    radial-gradient(circle at 50% 50%,#153c2c 0 3px,transparent 4px),
+    linear-gradient(135deg,#0a241b 25%,#11392a 25% 50%,#0a241b 50% 75%,#11392a 75%);
+  background-size:12px 12px,16px 16px;
+  border:1px dashed #b69d56;
+  box-shadow:inset 0 0 0 4px #071a14,0 4px 12px #0005;
+}
+.playing-card.empty::after{border-color:#d4bb6b44}
+.streets{
+  padding:5px;background:#050f0c88;border:1px solid #ffffff10;border-radius:12px;
+  width:max-content;max-width:100%;
+}
+.streets button{
+  background:transparent;color:#d3d7cd;border:1px solid transparent;border-radius:9px;
+}
+.streets button[aria-pressed="true"]{
+  background:linear-gradient(180deg,#ead58e,#c9a84b);
+  color:#251d0d;
+  box-shadow:0 1px 0 #fff7 inset,0 5px 15px #0005;
+}
+#submit{
+  min-height:52px;
+  background:
+    radial-gradient(circle at 50% 0,#fff9 0,transparent 20px),
+    linear-gradient(180deg,#f2d77f,#c7a13d);
+  color:#211a0c;
+  border:1px solid #f7e5a8;
+  border-radius:14px;
+  font-weight:850;
+  letter-spacing:.01em;
+  box-shadow:0 5px 0 #705512,0 11px 22px #0006,inset 0 1px 0 #fff8;
+}
+#submit:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+#submit:active:not(:disabled){transform:translateY(3px);box-shadow:0 2px 0 #705512,0 5px 10px #0005}
+.text-button{color:#dccb91}
+.examples{
+  padding-top:16px;border-top:1px solid #ffffff10;
+}
+.examples button{
+  position:relative;
+  border-radius:999px;
+  padding:8px 13px;
+  background:#17120f;
+  color:#f4e7bd;
+  border:2px dashed #a33a43;
+  box-shadow:0 0 0 3px #17120f,0 4px 10px #0005;
+}
+.examples button:nth-child(even){border-color:#2c7cab}
+.examples button:nth-child(3){border-color:#c29b2f}
+#status{
+  padding:9px 12px;border-radius:10px;
+  background:#04100caa;border:1px solid #ffffff0d;
+}
+.equities{
+  padding:18px;border-radius:18px;
+  background:#040d0a88;border:1px solid #ffffff13;
+}
+.equities>div{min-width:0}
+.big{
+  color:#f5df98;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  text-shadow:0 0 18px #d6b85a33;
+}
+.bar{
+  height:14px;background:#030907;border:1px solid #000;border-radius:999px;
+  box-shadow:inset 0 2px 5px #0008;
+}
+.bar div:first-child{background:linear-gradient(90deg,#d9b95b,#f1df9b)}
+.bar div:last-child{background:linear-gradient(90deg,#48799b,#83b7d9)}
+table{
+  margin-top:8px;background:#06140f55;border-radius:14px;overflow:hidden;
+}
+th{
+  color:#d7c992;font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+}
+td,th{padding:12px 10px;border-bottom:1px solid #ffffff0c}
+tbody tr:last-child td{border-bottom:0}
+code{
+  display:inline-block;margin-top:4px;padding:5px 8px;border-radius:8px;
+  background:#030806;color:#f3d98a;border:1px solid #ffffff0c;
+}
+details{
+  border:1px solid #ffffff10;background:#04100c99;border-radius:12px;padding:10px 12px;
+}
+dialog{
+  background:
+    radial-gradient(circle at 50% 0,#194b38,transparent 25rem),
+    linear-gradient(160deg,#0b2d22,#061a14);
+  border:8px solid var(--rail);
+  outline:1px solid #684c39;
+  border-radius:28px;
+  box-shadow:0 30px 90px #000d,inset 0 0 45px #0006;
+}
+dialog::backdrop{background:#020806e8;backdrop-filter:blur(7px)}
+.deck-row{
+  padding:8px;border-radius:12px;background:#030b0877;border:1px solid #ffffff0c;
+}
+.deck-row .playing-card{height:76px}
+.note{color:#aebdb3}
+.placeholder{
+  min-height:220px;display:flex;flex-direction:column;justify-content:center;
+  padding:28px;border:1px dashed #b69d5659;border-radius:18px;background:#04100c66;
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  main{padding:18px 12px 30px}
+  .topbar{position:sticky;top:8px;z-index:5}
+  .panel{border-width:5px;border-radius:24px}
+  h1{font-size:clamp(34px,12vw,50px)}
+}
+@media(max-width:600px){
+  .playing-card{width:52px;height:74px}
+  .hand-grid{padding:12px}
+  .suit-markers{font-size:16px}
+}
+
 </style>
 </head>
 <body><main>
 <div class="topbar"><div class="eyebrow" data-i18n="eyebrow">Texas Hold'em · Two known hands</div><div class="lang-switch" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div></div>
 <h1 data-i18n="title">Heads-up odds</h1>
-<p data-i18n="subtitle">Two known hands. Any street. Optional dead cards.</p>
+<p data-i18n="subtitle">Two known hands. Any street. Optional dead cards.</p><div class="suit-markers" aria-hidden="true"><span>♠</span><span>♥</span><span>♦</span><span>♣</span></div>
 <div class="layout">
-<section class="panel"><form id="form">
+<section class="panel input-panel"><form id="form">
 <div class="hand-grid">
 <div class="card-group"><h2 data-i18n="player1">Player 1</h2><div id="hand1" class="slots" role="group" aria-label="Player 1 hole cards"></div></div>
 <div class="card-group"><h2 data-i18n="player2">Player 2</h2><div id="hand2" class="slots" role="group" aria-label="Player 2 hole cards"></div></div>
@@ -45,7 +305,7 @@ dialog{width:min(860px,calc(100% - 24px));max-height:90dvh;overflow:auto;backgro
 <div id="status" role="status" aria-live="polite"></div>
 <div class="muted" data-i18n="tapHint">Tap a card to choose, replace or remove it.</div>
 </section>
-<section class="panel" aria-label="Results"><h2 data-i18n="showdownEquity">Showdown equity</h2>
+<section class="panel result-panel" aria-label="Results"><h2 data-i18n="showdownEquity">Showdown equity</h2>
 <div id="placeholder" class="placeholder"><span data-i18n="chooseCalc">Choose the cards and calculate.</span><p data-i18n="conditional">All results are conditional on the cards you know. Equity includes half of each split pot.</p></div>
 <div id="results" hidden>
 <div class="equities"><div><div class="muted" data-i18n="player1Caps">PLAYER 1</div><div id="eq1" class="big"></div></div><div><div class="muted" data-i18n="player2Caps">PLAYER 2</div><div id="eq2" class="big"></div></div></div>
