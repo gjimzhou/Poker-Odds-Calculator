@@ -7,7 +7,8 @@ or runtime dependencies. Python 3.10+.
 
 ## Hosted website
 
-**Public app:** https://gjimzhou.github.io/Poker-Odds-Calculator/
+**Public app:** https://gjimzhou.github.io/Poker-Odds-Calculator/  
+**Languages:** English / 中文 (switchable in the UI)
 
 The site is deployed from `web/` to GitHub Pages by
 `.github/workflows/pages.yml` whenever `master` changes. The browser-only app
