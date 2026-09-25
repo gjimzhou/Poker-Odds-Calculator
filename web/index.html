@@ -467,4 +467,5 @@ $('form').onsubmit=async e=>{
  }catch(error){$('status').className='error';$('status').textContent=error.message;}
  finally{if(worker)worker.terminate();worker=null;cancelJob=null;$('cancel').hidden=true;controls.forEach(b=>b.disabled=false);render();}
 };
-</script></body></html>
+</script><script src="analytics.js" data-project="Poker-Odds-Calculator"></script>
+</body></html>
