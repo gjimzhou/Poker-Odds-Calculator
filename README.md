@@ -36,3 +36,8 @@ Python 3.10+; the Python engine has no runtime package dependencies. Open local 
 `web/` contains the public website, `poker_odds/` the Python implementation, `tests/` the independent verification suite, and `docs/` the guides. The default branch is **`master`**, and GitHub Pages publishes `web/`.
 
 [Development and tests](docs/development.md) · [All documentation](docs/README.md) · [Report an issue](https://github.com/gjimzhou/Poker-Odds-Calculator/issues)
+
+## License
+
+Current code and original documentation are licensed under [MIT](LICENSE).
+Poker rules and mathematical facts are not proprietary. See [scope and third-party boundaries](NOTICE).

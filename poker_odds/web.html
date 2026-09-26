@@ -147,4 +147,5 @@ $('form').onsubmit=async e=>{
  }catch(error){$('status').className='error';$('status').textContent=error.message;}
  finally{if(worker)worker.terminate();worker=null;cancelJob=null;$('cancel').hidden=true;controls.forEach(b=>b.disabled=false);render();}
 };
-</script></body></html>
+</script><footer style="text-align:center;padding:1rem;font-size:.8rem"><a href="https://github.com/gjimzhou/Poker-Odds-Calculator/blob/master/LICENSE">MIT license · Code &amp; documentation</a></footer>
+</body></html>

@@ -1,0 +1,22 @@
+Poker Odds Calculator — licensing scope
+
+The MIT license in LICENSE covers the current source in poker_odds/, web/,
+tests/, the project's build/configuration files, and its original documentation
+(README.md, ANALYTICS.md and docs/). It does not claim ownership of poker rules,
+card symbols, odds, enumeration methods or mathematical facts. No runtime
+third-party library is bundled with the current calculator.
+
+The current implementation was rebuilt in September 2026; this notice does
+not assign authorship or retroactively license removed historical code.
+Python, setuptools, optional Playwright tests, GitHub Actions and the remote
+GoatCounter service retain their own terms. No ownership of those projects is
+claimed. Preserve any third-party notices in future contributions.
+
+This notice does not withdraw any valid permission previously granted. It does
+not restrict fair use, fair dealing, other applicable legal exceptions, or
+rights available under GitHub's platform terms. Public visibility is not a
+general reuse license or a dedication to the public domain. No ownership is
+claimed over facts, ideas, methods, mathematical principles, laws, government
+facts, or third-party trademarks. Copyright claims extend only to eligible
+original human-authored expression and selection or arrangement; AI assistance
+does not by itself establish copyright or ownership of generated material.
